@@ -1,0 +1,11 @@
+{
+    "version": 2,
+    "name": "1-1-serverless-now",
+    "builds": [
+        { "src": "*.js", "use": "@now/node" }
+    ],
+    "alias": "1-1-serverless-now",
+    "env": {
+        "DB_CONNECTION_STRING": "@1-1--serveless-now-mongodb-connection-string"
+    }
+}

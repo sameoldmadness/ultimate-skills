@@ -1,0 +1,16 @@
+{
+    "private": true,
+    "scripts": {
+        "deploy": "now && now alias"
+    },
+    "dependencies": {
+        "body": "^5.1.0",
+        "luxon": "^1.10.0",
+        "mongodb": "^3.1.10",
+        "send-data": "^8.0.0",
+        "yandex-dialogs-sdk": "^2.0.6"
+    },
+    "devDependencies": {
+        "now": "^13.0.4"
+    }
+}
