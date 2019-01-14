@@ -1,7 +1,7 @@
 const { MongoClient } = require('mongodb');
 
 const client = MongoClient
-    .connect(process.env.DB_CONNECTION_STRING)
+    .connect(process.env.DB_CONNECTION_STRING, { useNewUrlParser: true })
     .then(client => client.db('1_1__serveless_now'));
 
 function createContext(userId) {
@@ -10,7 +10,8 @@ function createContext(userId) {
     };
 }
 
-async function getContext(userId) {
+async function getContext(request) {
+    const userId = request.session.user_id;
     const db = await client;
     const result = await db.collection('sessions').findOneAndUpdate(
         { userId },
@@ -21,12 +22,16 @@ async function getContext(userId) {
     return result.value;
 }
 
-async function setContext(userId, context) {
+async function setContext(request, context) {
+    const userId = request.session.user_id;
     const db = await client;
+
+    const fields = JSON.parse(JSON.stringify(context));
+    delete fields._id;
 
     await db.collection('sessions').updateOne(
         { userId },
-        { $set: context }
+        { $set: fields }
     );
 }
 

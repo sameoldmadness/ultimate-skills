@@ -6,6 +6,11 @@ const makeResponse = (request, body) => ({
     version: request.version,
 });
 
+const makeTextResponse = request => text => {
+    return makeResponse(request)(Reply.text(text));
+};
+
 module.exports = {
     makeResponse,
+    makeTextResponse,
 };

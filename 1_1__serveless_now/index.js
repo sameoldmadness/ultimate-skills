@@ -1,15 +1,16 @@
 const { jsonBody, onError, sendJson } = require('./lib/io');
 const { getContext, setContext } = require('./lib/db');
-const { getResponse } = require('./lib/dialog');
+const { getIntent, getNextContext, getResponse } = require('./lib/dialog');
 
 module.exports = (req, res) => {
     (async () => {
         const request = await jsonBody(req, res);
-        const { user_id: userId } = request.session;
-        const context = await getContext(userId);
-        const response = getResponse(request);
+        const context = await getContext(request);
+        const intent = getIntent(request, context);
+        const nextContext = getNextContext(intent, request, context);
+        const response = getResponse(intent, request, nextContext);
 
-        await setContext(userId, context);
+        await setContext(request, nextContext);
         await sendJson(req, res, response);
     })().catch(onError(req, res));
 };
